@@ -12,38 +12,21 @@ public class GameScreen extends ScreenAdapter {
 	private Texture pacmanImg;
 	private PacmanGame pacmanGame;
 	private Pacman pacman;
-	World world;
+	private WorldRenderer worldRenderer;
+	private World world;
 	 
     public GameScreen(PacmanGame pacmanGame) {
         this.pacmanGame = pacmanGame;
         pacmanImg = new Texture("pacman.png");
         world = new World(pacmanGame);
-    }
-    
-    private void update(float delta) {
-    	if(Gdx.input.isKeyPressed(Keys.LEFT)) {
-    		pacman.move(Pacman.DIRECTION_LEFT);
-        }
-        if(Gdx.input.isKeyPressed(Keys.RIGHT)) {
-        	pacman.move(Pacman.DIRECTION_RIGHT);
-        }
-        if(Gdx.input.isKeyPressed(Keys.UP)) {
-        	pacman.move(Pacman.DIRECTION_UP);
-        }
-        if(Gdx.input.isKeyPressed(Keys.DOWN)) {
-        	pacman.move(Pacman.DIRECTION_DOWN);
-        }  
+        worldRenderer = new WorldRenderer(pacmanGame, world);
     }
     
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+    	Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    	update(delta);
-        SpriteBatch batch = pacmanGame.batch;
-        batch.begin();
-        Vector2 pos = pacman.getPosition();
-        batch.draw(pacmanImg, pos.x, pos.y);
-        batch.end();
+    	world.update(delta);
+    	worldRenderer.render(delta);
     }
 }

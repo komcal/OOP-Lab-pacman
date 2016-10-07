@@ -12,11 +12,12 @@ public class GameScreen extends ScreenAdapter {
 	private Texture pacmanImg;
 	private PacmanGame pacmanGame;
 	private Pacman pacman;
+	World world;
 	 
     public GameScreen(PacmanGame pacmanGame) {
         this.pacmanGame = pacmanGame;
         pacmanImg = new Texture("pacman.png");
-        pacman = new Pacman(100,100);
+        world = new World(pacmanGame);
     }
     
     private void update(float delta) {

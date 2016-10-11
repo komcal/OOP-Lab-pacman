@@ -26,7 +26,23 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
     	Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    	world.update(delta);
+    	update(delta);
     	worldRenderer.render(delta);
+    }
+    public void update(float delta) {
+		Pacman pacman = world.getPacman();
+    	if(Gdx.input.isKeyPressed(Keys.LEFT)) {
+    		pacman.setNextDirection(Pacman.DIRECTION_LEFT);
+        }
+        if(Gdx.input.isKeyPressed(Keys.RIGHT)) {
+        	pacman.setNextDirection(Pacman.DIRECTION_RIGHT);
+        }
+        if(Gdx.input.isKeyPressed(Keys.UP)) {
+        	pacman.setNextDirection(Pacman.DIRECTION_UP);
+        }
+        if(Gdx.input.isKeyPressed(Keys.DOWN)) {
+        	pacman.setNextDirection(Pacman.DIRECTION_DOWN);
+        }
+        world.update(delta);
     }
 }

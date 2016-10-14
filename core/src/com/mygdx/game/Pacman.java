@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
+import java.util.LinkedList;
+
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 
 public class Pacman {
 	private Vector2 position;
@@ -13,6 +16,7 @@ public class Pacman {
     private int currentDirection;
     private int nextDirection;
     private World world;
+    private LinkedList<DotEattenListener> listeners;
 	 
     private static final int [][] DIR_OFFSETS = new int [][] {
         {0,0},
@@ -26,6 +30,7 @@ public class Pacman {
         currentDirection = DIRECTION_STILL;
         nextDirection = DIRECTION_STILL;
         this.world = world;
+        listeners = new LinkedList<DotEattenListener>();
     }    
  
     public Vector2 getPosition() {
@@ -54,7 +59,7 @@ public class Pacman {
             }
         	if(maze.hasDotAt(getRow(), getColumn())) {
         		maze.removeDotAt(getRow(), getColumn());
-        		world.increaseScore();
+        		notifyDotEattenListeners();
         	}
         }
         position.x += SPEED * DIR_OFFSETS[currentDirection][0];
@@ -75,5 +80,17 @@ public class Pacman {
  
     private int getColumn() {
         return ((int)position.x) / WorldRenderer.BLOCK_SIZE; 
+    }
+    public interface DotEattenListener {
+        void notifyDotEatten();			
+    }
+    public void registerDotEattenListener(DotEattenListener l) {
+        listeners.add(l);
+    }
+ 
+    private void notifyDotEattenListeners() {
+        for(DotEattenListener l : listeners) {
+            l.notifyDotEatten();
+        }
     }
 }
